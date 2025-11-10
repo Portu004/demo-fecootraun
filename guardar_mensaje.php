@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mensaje = $_POST['mensaje'];
 
     // Insertar datos en la base de datos
-    $sql = "INSERT INTO mensajes (nombre, telefono, email, mensaje) VALUES ('$nombre', '$telefono', '$email', '$mensaje')";
+    $sql = "INSERT INTO formularios (nombre, telefono, email, mensaje) VALUES ('$nombre', '$telefono', '$email', '$mensaje')";
 
     if ($conn->query($sql) === TRUE) {
         echo "Mensaje guardado con éxito";
@@ -32,4 +32,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
+
 
