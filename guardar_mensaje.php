@@ -1,8 +1,8 @@
 <?php
 // Datos de la base de datos
 $servername = "localhost";
-$username = "u949521498_portuu";
-$password = "Basededatos442";
+$username = "root";
+$password = "";
 $dbname = "u949521498_basedatos04";
 
 // Crear conexión
@@ -32,3 +32,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
+
