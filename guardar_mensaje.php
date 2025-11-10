@@ -1,11 +1,10 @@
 <?php
-// Datos de la base de datos
+// --- Conexión a la base de datos LOCAL  ---
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "u949521498_basedatos04";
+$username = "root";       // Usuario por defecto de XAMPP
+$password = "";           // Contraseña vacía por defecto de XAMPP
+$dbname = "u949521498_basedatos04"; 
 
-// Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Verificar conexión
@@ -13,22 +12,33 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Procesar el formulario
+// --- Procesar el formulario ---
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['nombre'];
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
     $mensaje = $_POST['mensaje'];
 
-    // Insertar datos en la base de datos
-    $sql = "INSERT INTO formularios (nombre, telefono, email, mensaje) VALUES ('$nombre', '$telefono', '$email', '$mensaje')";
+    // --- ESTA ES LA FORMA SEGURA (CONSULTAS PREPARADAS) ---
+    
+    // 1. Preparamos la consulta. 
+    $stmt = $conn->prepare("INSERT INTO formularios (nombre, telefono, email, mensaje) VALUES (?, ?, ?, ?)");
+    
+    // 2. "Atamos" (bind) las variables a los "?"
+    // Las "ssss" significan que las 4 variables son de tipo String (texto)
+    $stmt->bind_param("ssss", $nombre, $telefono, $email, $mensaje);
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Mensaje guardado con éxito";
+    // 3. Ejecutamos la consulta
+    if ($stmt->execute()) {
+        // Éxito: Redirigimos
+        header("Location: ver_datos.php");
+        exit;
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $stmt->error;
     }
 
+    // 4. Cerramos todo
+    $stmt->close();
     $conn->close();
 }
 ?>
